@@ -4,7 +4,7 @@
 
 ### 第1章 基础
 
-* [栈](./chapter1)
+* [栈](./chapter1/stack.md)
 * [队列](./chapter1)
 * [链表](./chapter1)
 
