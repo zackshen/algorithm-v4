@@ -1,4 +1,5 @@
 # 算法(第四版)的学习
+[![Build Status](https://travis-ci.com/zackshen/algorithm-v4.svg?branch=master)](https://travis-ci.com/zackshen/algorithm-v4)
 
 ## 目录
 
