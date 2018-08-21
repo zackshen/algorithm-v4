@@ -5,9 +5,11 @@
 
 ### 第1章 基础
 
-* [栈](./chapter1/stack.md)
-* [队列](./chapter1)
-* [链表](./chapter1)
+* [栈](./chapter1/stack/stack.md)
+* [队列](./chapter1/queue/queue.md)
+* [集合](./chapter1/set/set.md)
+* [背包](./chapter1/bag/bag.md)
+* [链表](./chapter1/)
 
 ### 第2章 排序
 
