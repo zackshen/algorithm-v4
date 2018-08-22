@@ -31,5 +31,5 @@ func TestSet(t *testing.T) {
 
 	expectedItems := []string{"world"}
 
-	assert.Equal(t, set.Items(), expectedItems, "should be equal")
+	assert.ElementsMatch(t, set.Items(), expectedItems, "should be equal")
 }
