@@ -59,7 +59,7 @@ func ExprEvaluate(expression string) int {
 					log.Fatal("values stack is empty")
 				} else {
 					v2, _ := strconv.Atoi(v.(string))
-					val = val - v2
+					val = v2 - val
 				}
 			} else if op == "*" {
 				if v, err := vals.Pop(); err != nil {
@@ -73,7 +73,7 @@ func ExprEvaluate(expression string) int {
 					log.Fatal("values stack is empty")
 				} else {
 					v2, _ := strconv.Atoi(v.(string))
-					val = val / v2
+					val = v2 / val
 				}
 			}
 
