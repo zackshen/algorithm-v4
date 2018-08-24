@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -33,7 +32,7 @@ func getOpFromStack(stack *Stack) (string, error) {
 	return op, nil
 }
 
-func ExprEvaluate(expression string) float64 {
+func ExprEvaluate(expression string) (float64, error) {
 	var lastNumber bool
 	ops := NewStack()
 	vals := NewStack()
@@ -63,38 +62,38 @@ func ExprEvaluate(expression string) float64 {
 			lastNumber = false
 			val, err := getValueFromStack(vals)
 			if err != nil {
-				log.Panic(err)
+				return 0, err
 			}
 			op, err := getOpFromStack(ops)
 			if err != nil {
-				log.Panic(err)
+				return 0, err
 			}
 
 			if op == "+" {
 				val2, err := getValueFromStack(vals)
 				if err != nil {
-					log.Panic(err)
+					return 0, err
 				}
 				val = val + val2
 			} else if op == "-" {
 				val2, err := getValueFromStack(vals)
 				if err != nil {
-					log.Panic(err)
+					return 0, err
 				}
 				val = val2 - val
 			} else if op == "*" {
 				val2, err := getValueFromStack(vals)
 				if err != nil {
-					log.Panic(err)
+					return 0, err
 				}
 				val = val2 * val
 			} else if op == "/" {
 				val2, err := getValueFromStack(vals)
 				if err != nil {
-					log.Panic(err)
+					return 0, err
 				}
 				if val == 0 {
-					log.Panic("divide zero is illegal")
+					return 0, errors.New("divide zero is illegal")
 				}
 				val = val2 / val
 			}
@@ -104,12 +103,12 @@ func ExprEvaluate(expression string) float64 {
 			if lastNumber {
 				val, err := getValueFromStack(vals)
 				if err != nil {
-					log.Panic(err)
+					return 0, err
 				}
 
 				val2, err := strconv.ParseFloat(char, 64)
 				if err != nil {
-					log.Panic(err)
+					return 0, err
 				}
 
 				val = val*10 + val2
@@ -123,12 +122,12 @@ func ExprEvaluate(expression string) float64 {
 
 	val, err := vals.Pop()
 	if err != nil {
-		log.Panic(err)
+		return 0, err
 	}
 	result, err := strconv.ParseFloat(val.(string), 64)
 	if err != nil {
-		log.Panic(err)
+		return 0, err
 	}
 
-	return result
+	return result, nil
 }
