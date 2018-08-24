@@ -1,12 +1,39 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"log"
 	"strconv"
 	"strings"
 )
 
-func ExprEvaluate(expression string) int {
+func getValueFromStack(stack *Stack) (float64, error) {
+	var value interface{}
+	value, err := stack.Pop()
+	if err != nil {
+		return 0, errors.New("values stack is empty")
+	}
+	val, err := strconv.ParseFloat(value.(string), 32)
+	if err != nil {
+		return 0, fmt.Errorf("%v parse float fail", value)
+	}
+	return val, nil
+}
+
+func getOpFromStack(stack *Stack) (string, error) {
+	value, err := stack.Pop()
+	if err != nil {
+		return "", errors.New("operators stack is empty")
+	}
+	op, ok := value.(string)
+	if !ok {
+		return "", fmt.Errorf("%v inference type failed", value)
+	}
+	return op, nil
+}
+
+func ExprEvaluate(expression string) float64 {
 	var lastNumber bool
 	ops := NewStack()
 	vals := NewStack()
@@ -34,61 +61,59 @@ func ExprEvaluate(expression string) int {
 			ops.Push(char)
 		} else if char == ")" {
 			lastNumber = false
-			var val int
-			if v, err := vals.Pop(); err != nil {
-				log.Fatal("values stack is empty")
-			} else {
-				val, _ = strconv.Atoi(v.(string))
+			val, err := getValueFromStack(vals)
+			if err != nil {
+				log.Panic(err)
 			}
-			var op string
-			if o, err := ops.Pop(); err != nil {
-				log.Fatal("operators stack is empty")
-			} else {
-				op = o.(string)
+			op, err := getOpFromStack(ops)
+			if err != nil {
+				log.Panic(err)
 			}
 
 			if op == "+" {
-				if v, err := vals.Pop(); err != nil {
-					log.Fatal("values stack is empty")
-				} else {
-					v2, _ := strconv.Atoi(v.(string))
-					val = val + v2
+				val2, err := getValueFromStack(vals)
+				if err != nil {
+					log.Panic(err)
 				}
+				val = val + val2
 			} else if op == "-" {
-				if v, err := vals.Pop(); err != nil {
-					log.Fatal("values stack is empty")
-				} else {
-					v2, _ := strconv.Atoi(v.(string))
-					val = v2 - val
+				val2, err := getValueFromStack(vals)
+				if err != nil {
+					log.Panic(err)
 				}
+				val = val2 - val
 			} else if op == "*" {
-				if v, err := vals.Pop(); err != nil {
-					log.Fatal("values stack is empty")
-				} else {
-					v2, _ := strconv.Atoi(v.(string))
-					val = val * v2
+				val2, err := getValueFromStack(vals)
+				if err != nil {
+					log.Panic(err)
 				}
+				val = val2 * val
 			} else if op == "/" {
-				if v, err := vals.Pop(); err != nil {
-					log.Fatal("values stack is empty")
-				} else {
-					v2, _ := strconv.Atoi(v.(string))
-					val = v2 / val
+				val2, err := getValueFromStack(vals)
+				if err != nil {
+					log.Panic(err)
 				}
+				if val == 0 {
+					log.Panic("divide zero is illegal")
+				}
+				val = val2 / val
 			}
 
-			vals.Push(strconv.Itoa(val))
+			vals.Push(strconv.FormatFloat(val, 'f', 6, 64))
 		} else {
 			if lastNumber {
-				var val int
-				if v, err := vals.Pop(); err != nil {
-					log.Fatal("values stack is empty")
-				} else {
-					v2, _ := strconv.Atoi(v.(string))
-					v3, _ := strconv.Atoi(char)
-					val = v2*10 + v3
+				val, err := getValueFromStack(vals)
+				if err != nil {
+					log.Panic(err)
 				}
-				vals.Push(strconv.Itoa(val))
+
+				val2, err := strconv.ParseFloat(char, 64)
+				if err != nil {
+					log.Panic(err)
+				}
+
+				val = val*10 + val2
+				vals.Push(strconv.FormatFloat(val, 'f', 6, 64))
 			} else {
 				vals.Push(char)
 			}
@@ -96,9 +121,14 @@ func ExprEvaluate(expression string) int {
 		}
 	}
 
-	if v, err := vals.Pop(); err == nil {
-		result, _ := strconv.Atoi(v.(string))
-		return result
+	val, err := vals.Pop()
+	if err != nil {
+		log.Panic(err)
 	}
-	return -1
+	result, err := strconv.ParseFloat(val.(string), 64)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	return result
 }
