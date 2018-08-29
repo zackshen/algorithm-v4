@@ -9,7 +9,7 @@
 * [队列](./chapter1/queue/queue.md)
 * [集合](./chapter1/set/set.md)
 * [背包](./chapter1/bag/bag.md)
-* [链表](./chapter1/)
+* [链表](./chapter1/linked-list/linked-list.md)
 
 ### 第2章 排序
 
