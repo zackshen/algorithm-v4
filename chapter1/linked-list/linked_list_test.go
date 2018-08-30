@@ -44,15 +44,15 @@ func TestLinkedList(t *testing.T) {
 	element := firstElement
 	cursor := 0
 	for {
-		if element.Next() == nil {
-			break
-		}
 		v, ok = element.Value.(string)
-		fmt.Printf("%s %s\n", v, values[cursor])
+		fmt.Printf("%s -> %s\n", v, values[cursor])
 		if v != values[cursor] {
 			t.Error("LinkedList get item fail")
 		}
 		cursor++
+		if element.Next() == nil {
+			break
+		}
 		element = element.Next()
 	}
 

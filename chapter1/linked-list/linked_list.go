@@ -27,50 +27,48 @@ func NewLinkedList() *LinkedList {
 	}
 }
 
-// TODO PushBack和PushFront还没有将list连接起来
 func (l *LinkedList) PushBack(item interface{}) *Element {
-	var firstElement *Element
-	if l.first == nil {
+	if l.first == nil && l.last == nil {
 		l.first = &Element{
 			prev:  nil,
 			next:  nil,
 			Value: item,
 		}
-		firstElement = l.first
-	}
-
-	if l.last == nil {
-		l.last = firstElement
+		l.last = l.first
 	} else {
+		lLast := l.last
 		l.last = &Element{
-			prev:  l.last,
+			prev:  lLast,
 			next:  nil,
 			Value: item,
+		}
+		lLast.next = l.last
+		if l.first.next == nil {
+			l.first.next = l.last
 		}
 	}
 	l.size++
 	return l.last
 }
 
-// TODO PushBack和PushFront还没有将list连接起来
 func (l *LinkedList) PushFront(item interface{}) *Element {
-	var lastElement *Element
-	if l.last == nil {
-		l.last = &Element{
+	if l.first == nil && l.last == nil {
+		l.first = &Element{
 			prev:  nil,
 			next:  nil,
 			Value: item,
 		}
-		lastElement = l.last
-	}
-
-	if l.first == nil {
-		l.first = lastElement
+		l.last = l.first
 	} else {
+		lFirst := l.first
 		l.first = &Element{
 			prev:  nil,
-			next:  l.first,
+			next:  lFirst,
 			Value: item,
+		}
+		lFirst.prev = l.first
+		if l.last.prev == nil {
+			l.last.prev = l.first
 		}
 	}
 	l.size++
