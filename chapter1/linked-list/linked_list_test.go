@@ -56,4 +56,21 @@ func TestLinkedList(t *testing.T) {
 		element = element.Next()
 	}
 
+	toRemoveElement := l.Front().Next().Next().Next()
+	t.Log("to remove element is ", toRemoveElement.Value)
+	removeValue := l.Remove(toRemoveElement)
+	if v := removeValue.(string); v != "1" {
+		t.Error("LinkedList remove error")
+	}
+
+	if l.Len() != 7 {
+		t.Error("LinkedList remove error")
+	}
+
+	fmt.Println(l.Front().Value)
+	fmt.Println(l.Front().Next().Value)
+	fmt.Println(l.Front().Next().Next().Value)
+	fmt.Println(l.Front().Next().Next().Next().Value)
+	fmt.Println(l.Front().Next().Next().Next().Next().Value)
+
 }
