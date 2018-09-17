@@ -87,6 +87,29 @@ func (l *LinkedList) Len() int {
 	return l.size
 }
 
+func (l *LinkedList) Remove(e *Element) interface{} {
+	if l.first == nil {
+		return nil
+	}
+
+	element := l.first.Next()
+	for {
+		if element == nil {
+			return nil
+		}
+		if element.Value == e.Value {
+			nextElement := e.Next()
+			element.Prev().next = nextElement
+			nextElement.prev = element.Prev()
+			l.size--
+			e.prev = nil
+			e.next = nil
+			return e.Value
+		}
+		element = element.Next()
+	}
+}
+
 func main() {
 
 }
