@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 func swap(i, j int, data []int) {
 	data[i], data[j] = data[j], data[i]
 }
@@ -24,12 +20,5 @@ func SelectionSort(data []int) {
 }
 
 func main() {
-	data := []int{55, 1, 89, 34, 46, 27, 86, 94, 5, 6}
-	SelectionSort(data)
-	fmt.Printf("%v\n", data)
-
-	data2 := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	SelectionSort(data2)
-	fmt.Printf("%v\n", data2)
 
 }
